@@ -45,6 +45,7 @@ def karno_tab(entry):
         widget.destroy()
     table = Table(Frame22, headings=m, rows=n)
     table.pack(side=TOP)
+    message3.set("")
     message3.set(kstr)
 
 

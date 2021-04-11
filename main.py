@@ -2,10 +2,8 @@ from sympy import *
 from sympy.abc import *
 from itertools import product
 from pars import *
-import numpy as np
 import qm
 import re
-
 
 def check(match, k):
     kstr = ""
@@ -98,8 +96,8 @@ def karno(match, v1):
         arr2.append(mass_to_str(v1[i][a:-1]))
         arr3.append(int(v1[i][-1]))
 
-    arr3 = np.array(arr3)
-    arr3 = arr3.reshape(a1 - 1, b1 - 1)
+
+    arr3 = reshape(arr3, (a1 - 1, b1 - 1) )
     arr1 = list(set(arr1))
     arr2 = list(set(arr2))
     arr1.sort()

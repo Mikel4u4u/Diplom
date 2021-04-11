@@ -1,4 +1,6 @@
 import re
+from functools import reduce
+from operator import mul
 
 def change_rImplies(matchobj):
     result = re.findall(r'\b\w\b', matchobj.group(0))
@@ -68,3 +70,9 @@ def rall(expression):
     expression = rEquivalent(expression)
 
     return expression
+
+def reshape(lst, shape):
+    if len(shape) == 1:
+        return lst
+    n = reduce(mul, shape[1:])
+    return [reshape(lst[i*n:(i+1)*n], shape[1:]) for i in range(len(lst)//n)]
