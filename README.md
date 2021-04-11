@@ -1,2 +1,4 @@
 # Diplom
-PyCharm
+
+RUN.bat - запуск программы
+
