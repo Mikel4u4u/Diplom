@@ -4,7 +4,15 @@ RUN.bat - запуск программы
 
 ### Результаты работы программы
 
-![alt text](img/1.png){:height="36px" width="36px"}
+<img src="img/1.png" width="200" height="50"/>
+
+<img src="img/2.png" width="200" height="50"/>
+
+<img src="img/3.png" width="200" height="50"/>
+
+<img src="img/4.png" width="200" height="50"/>
+
+![alt text](img/1.png)
 ![alt text](img/2.png)
 ![alt text](img/3.png)
 ![alt text](img/4.png)
