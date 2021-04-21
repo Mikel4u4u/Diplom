@@ -123,6 +123,12 @@ def karta_karno(match, v):
     for i in range(len(v)):
         if v[i][-1] == True:
             mas.append(i)
+
+    if len(mas) == len(v):
+        return "TRUE"
+    elif len(mas) == 0:
+        return "FALSE"
+
     arr = qm.qm(ones=mas)
     print(arr)
     for i in range(len(arr)):
@@ -170,11 +176,11 @@ def truthTable(expression):
 
 
 if __name__ == "__main__":
-    expression = " A  ↓  B"
+    expression = " A  → (B → A)"
     v, v1, match = truthTable(expression)
 
-    # karno(match, v1)
-    # print(karta_karno(match, v1))
+    karno(match, v1)
+    print(karta_karno(match, v1))
     # print("_____________")
     # print("T0: ", T0(v))
     # print("T1: ", T1(v))
