@@ -103,7 +103,8 @@ def click(text):
     if text == 'CE':
         message.set('')
     else:
-        message.set(message.get() + text )
+        Entry1.insert(Entry1.index(INSERT), text)
+        #message.set(message.get() + text )
 
 
 root = Tk()
