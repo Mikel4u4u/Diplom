@@ -1,6 +1,3 @@
-from sympy import *
-from sympy.abc import *
-from itertools import product
 from pars import *
 import qm
 import re
@@ -154,8 +151,7 @@ def truthTable(expression):
 
 if __name__ == "__main__":
     expression = " ~( ~ ( A & B) → A ) ⋁ B"
-    expression1 = "  B  →    A  "
-    v, v1, match = truthTable(expression1)
+    v, v1, match = truthTable(expression)
     karno(match, v1)
     print(karta_karno(match, v1))
     # print("_____________")
