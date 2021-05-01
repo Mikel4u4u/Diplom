@@ -4,10 +4,10 @@ from main import truthTable, Post , karno, karta_karno
 
 variable = []
 
-buttons = (('A', 'B', 'C', 'D', '4'),
-           ('¬', '&', '⋁', '⊕', '4'),
-           ('→', '↑', '↓', '≡', '4'),
-           ('(', ')', 'CE', 'F', '4'),
+buttons = ((' A ', ' B ', ' C ', ' D ', '4'),
+           (' ¬', ' & ', ' ⋁ ', ' ⊕ ', '4'),
+           (' → ', ' ↑ ', ' ↓ ', ' ≡ ', '4'),
+           (' ( ', ' ) ', 'CE', ' F ', '4'),
            )
 
 
@@ -103,7 +103,7 @@ def click(text):
     if text == 'CE':
         message.set('')
     else:
-        message.set(message.get() + " " + text + " ")
+        message.set(message.get() + text )
 
 
 root = Tk()

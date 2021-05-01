@@ -140,45 +140,22 @@ def karta_karno(match, v):
 
 
 def truthTable(expression):
-    match = re.findall(r'\b\w\b', expression)
+    match = re.findall(r'\b\w\d?\b', expression)
     match = list(set(match))
     match.sort()
 
     print("Boolean Expression:")
     print("  X = " + expression.upper())
 
-    expression = expression.replace("AND", "&")
-    expression = expression.replace("XOR", "^")
-    expression = expression.replace("⊕", "^")
-    expression = expression.replace("OR", "|")
-    expression = expression.replace("⋁", "|")
-    expression = expression.replace("NOT", "~")
-    expression = expression.replace("¬", "~")
-    while (expression != rall(expression)):
-        expression = rall(expression)
-
-    print("\nTruth Table:")
-    print(expression)
-
-    v = []
-    v1 = []
-    print(match)
-    for x in product([0, 1], repeat=len(match)):
-        values = dict(zip(match, x))
-        y = bool(eval(expression).subs(values))
-        v.append(y)
-        x1 = list(x)
-        x1.append(y)
-        v1.append(x1)
-        print(x1)
-
+    a = Truths(match, [expression])
+    v, v1 = a.myas_pandas()
     return v, v1, match
 
 
 if __name__ == "__main__":
-    expression = " A  → (B → A)"
-    v, v1, match = truthTable(expression)
-
+    expression = " ~( ~ ( A & B) → A ) ⋁ B"
+    expression1 = "  B  →    A  "
+    v, v1, match = truthTable(expression1)
     karno(match, v1)
     print(karta_karno(match, v1))
     # print("_____________")
