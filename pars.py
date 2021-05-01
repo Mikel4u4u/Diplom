@@ -83,12 +83,12 @@ def group_operations(phrase):
     if isinstance(phrase, list):
         if len(phrase) == 1:
             return phrase
-        for operator in ['not', '~', '-']:
+        for operator in ['not', '~', '-','¬']:
             while operator in phrase:
                 index = phrase.index(operator)
                 phrase[index] = [operator, group_operations(phrase[index+1])]
                 phrase.pop(index+1)
-        for operator in ['and', 'nand']:
+        for operator in ['and','&', 'nand']:
             while operator in phrase:
                 index = phrase.index(operator)
                 phrase[index] = [group_operations(phrase[index-1]),
@@ -96,7 +96,7 @@ def group_operations(phrase):
                                  group_operations(phrase[index+1])]
                 phrase.pop(index+1)
                 phrase.pop(index-1)
-        for operator in ['or', 'nor', 'xor']:
+        for operator in ['or','⋁', 'nor', 'xor']:
             while operator in phrase:
                 index = phrase.index(operator)
                 phrase[index] = [group_operations(phrase[index-1]),

@@ -146,11 +146,12 @@ def truthTable(expression):
 
     a = Truths(match, [expression])
     v, v1 = a.myas_pandas()
+    print(v, v1, match)
     return v, v1, match
 
 
 if __name__ == "__main__":
-    expression = " ~( ~ ( A & B) → A ) ⋁ B"
+    expression = "A & ¬ B"
     v, v1, match = truthTable(expression)
     karno(match, v1)
     print(karta_karno(match, v1))
