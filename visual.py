@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-from main import truthTable, Post , karno, karta_karno
+from main import truthTable, Post, karno, karta_karno
 
 variable = []
 
@@ -30,25 +30,23 @@ class Table(Frame):
         scrolltable.pack(side=RIGHT, fill=Y)
         table.pack(expand=YES, fill=BOTH)
 
+
 def karno_tab(entry):
     value = get_value(entry)
-
     try:
         v, v1, match = truthTable(value)
     except:
         print("ERROR")
-    arr=karno(match, v1)
+    arr = karno(match, v1)
     kstr = karta_karno(match, v1)
-    m=arr[0]
-    n=arr[1:]
+    m = arr[0]
+    n = arr[1:]
     for widget in Frame22.winfo_children():
         widget.destroy()
     table = Table(Frame22, headings=m, rows=n)
     table.pack(side=TOP)
     message3.set("")
     message3.set(kstr)
-
-
 
 
 def get_value(entryWidget):
@@ -60,23 +58,25 @@ def get_value(entryWidget):
 
 
 def check(text, variable):
-    arr=[TRUE,TRUE,TRUE,TRUE,TRUE]
+    arr = [TRUE, TRUE, TRUE, TRUE, TRUE]
     message1.set(message1.get() + " " + text + ", ")
     for i in variable:
         for j in range(5):
-            arr[j]=arr[j] and i[j][1]
-    if(sum(arr)==0):
+            arr[j] = arr[j] and i[j][1]
+    if (sum(arr) == 0):
         message2.set("Полная")
     else:
         message2.set("Не полная. Система булевых функций принадлежит: ")
         for i in range(5):
-            if(arr[i]==TRUE):
-                message2.set(message2.get()+variable[0][i][0]+", ")
+            if (arr[i] == TRUE):
+                message2.set(message2.get() + variable[0][i][0] + ", ")
+
 
 def cleanPost():
     message1.set("Система булевых функций: ")
     message2.set("")
     variable.clear()
+
 
 def check_Post(entry):
     global variable
@@ -104,17 +104,18 @@ def click(text):
         message.set('')
     else:
         Entry1.insert(Entry1.index(INSERT), text)
-        #message.set(message.get() + text )
+        # message.set(message.get() + text )
 
 
 root = Tk()
 root.geometry('800x700')
+
 tab_control = ttk.Notebook(root)
 f1 = Frame(root, bg='grey')
 f2 = Frame(root, bg='grey')
+
 tab_control.add(f1, text='Критерий Поста')
 tab_control.pack(fill="both", side="top", expand=True)
-
 tab_control.add(f2, text='Карта Карно')
 tab_control.pack(fill="both", side="top", expand=True)
 
@@ -122,7 +123,6 @@ message = StringVar()
 message1 = StringVar()
 message2 = StringVar()
 message3 = StringVar()
-
 message1.set("Система булевых функций: ")
 
 # Фреймы
@@ -159,12 +159,12 @@ Entry2.pack(side=TOP, padx=5, pady=5)
 
 Label2 = Label(Frame12, textvariable=message1, width=80)
 Label2.pack(side=TOP, padx=5, pady=5)
+
 Label3 = Label(Frame12, textvariable=message2, width=80)
 Label3.pack(side=TOP, padx=5, pady=5)
+
 Label4 = Label(f2, textvariable=message3, width=60)
 Label4.pack(side=TOP, padx=5, pady=5)
-
-
 
 Button(Frame1, text='Проверить критерий Поста',
        command=lambda: [check_Post(Entry1)]).pack()
@@ -173,4 +173,5 @@ Button(Frame12, text='Очистить',
 
 Button(Frame21, text='карта Карно',
        command=lambda: [karno_tab(Entry2)]).pack(side=TOP)
+
 root.mainloop()

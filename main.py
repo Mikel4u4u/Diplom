@@ -2,6 +2,7 @@ from pars import *
 import qm
 import re
 
+
 def check(match, k):
     kstr = ""
     for i in range(len(k)):
@@ -49,13 +50,14 @@ def M(values):
     return True
 
 
-def L(values):
+def L(values, valuesy):
     for i in range(len(values)):
-        if sum(values[i][:-1]) > 1 and values[i][0] == True:
+        if sum(values[i][:-1]) > 1 and valuesy[0] == True:
             return False
 
-        for j in range(len(values) - 1 - i):
-            values[j][-1] = values[j][-1] ^ values[j + 1][-1]
+        for j in range(len(valuesy) - 1):
+            valuesy[j] = valuesy[j] ^ valuesy[j + 1]
+        valuesy.pop()
     return True
 
 
@@ -68,7 +70,7 @@ def mass_to_str(a):
 
 def Post(v, v1):
     a = ["Критерий", "True/False"]
-    b = [["T0", T0(v)], ["T1", T1(v)], ["S", S(v)], ["M", M(v1)], ["L", L(v1)]]
+    b = [["T0", T0(v)], ["T1", T1(v)], ["S", S(v)], ["M", M(v1)], ["L", L(v1, v)]]
     return a, b
 
 
@@ -93,8 +95,7 @@ def karno(match, v1):
         arr2.append(mass_to_str(v1[i][a:-1]))
         arr3.append(int(v1[i][-1]))
 
-
-    arr3 = reshape(arr3, (a1 - 1, b1 - 1) )
+    arr3 = reshape(arr3, (a1 - 1, b1 - 1))
     arr1 = list(set(arr1))
     arr2 = list(set(arr2))
     arr1.sort()
@@ -146,20 +147,22 @@ def truthTable(expression):
 
     a = Truths(match, [expression])
     v, v1 = a.my_as_pandas()
+    print(match)
     for i in v1:
         print(i)
     return v, v1, match
 
 
 if __name__ == "__main__":
-    expression = "(B → (A → C)) → A"
+    expression = "   (  A  &  B  )  ≡  (  A  →  B  )  "
     v, v1, match = truthTable(expression)
     karno(match, v1)
     print(karta_karno(match, v1))
+
     # print("_____________")
     # print("T0: ", T0(v))
     # print("T1: ", T1(v))
     # print("S: ", S(v))
     # print("M: ", M(v1))
-    # print("L: ", L(v1))
+    # print("L: ", L(v1, v))
     # print()
