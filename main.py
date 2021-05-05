@@ -7,11 +7,87 @@ def check(match, k):
     kstr = ""
     for i in range(len(k)):
         if k[i] == "1":
-            kstr = kstr + str(match[i])
+            kstr = kstr + str(match[i]) + " & "
         elif k[i] == "0":
-            kstr = kstr + str(match[i]) + "'"
+            kstr = kstr + str(match[i]) + "'" + " & "
         else:
             continue
+    kstr = kstr[:-3]
+    kstr = "( " + kstr + " )"
+    return kstr
+
+
+def check1(match, k):
+    kstr = ""
+    for i in range(len(k) - 1):
+        if k[i] == 1:
+            kstr = kstr + str(match[i]) + " & "
+        elif k[i] == 0:
+            kstr = kstr + str(match[i]) + "'" + " & "
+        else:
+            continue
+    kstr = kstr[:-3]
+    kstr = "( " + kstr + " )"
+    return kstr
+
+
+def sdnf(v, v1, match):
+    kstr = ""
+    for i in range(len(v1)):
+        if v1[i][-1] == True:
+            kstr = kstr + check1(match, v1[i]) + " ⋁ "
+    kstr = kstr[:-3]
+    return kstr
+
+
+def check2(match, k):
+    kstr = ""
+    for i in range(len(k) - 1):
+        if k[i] == 0:
+            kstr = kstr + str(match[i]) + " ⋁ "
+        elif k[i] == 1:
+            kstr = kstr + str(match[i]) + "'" + " ⋁ "
+        else:
+            continue
+    kstr = kstr[:-3]
+    kstr = "( " + kstr + " )"
+    return kstr
+
+
+def scnf(v, v1, match):
+    kstr = ""
+    for i in range(len(v1)):
+        if v1[i][-1] == False:
+            kstr = kstr + check2(match, v1[i]) + " & "
+    kstr = kstr[:-3]
+    return kstr
+
+
+def check3(match, k):
+    kstr = ""
+    for i in range(len(k) - 1):
+        if k[i] == 1:
+            kstr = kstr + str(match[i]) + " & "
+        elif k[i] == 0:
+            continue
+    kstr = kstr[:-3]
+    kstr = "( " + kstr + " )"
+    return kstr
+
+
+def polinom(values, valuesy, match):
+    kstr = ""
+    for i in range(len(values)):
+        if valuesy[0] == True:
+            if i == 0:
+                kstr = kstr + "1 ⊕ "
+            else:
+                kstr = kstr + check3(match, values[i]) + " ⊕ "
+
+        for j in range(len(valuesy) - 1):
+            valuesy[j] = valuesy[j] ^ valuesy[j + 1]
+        valuesy.pop()
+    kstr = kstr[:-3]
     return kstr
 
 
@@ -159,11 +235,13 @@ def truthTable(expression):
 
 
 if __name__ == "__main__":
-    expression = "   (  A  &  B  )  ≡  (  A  →  B  )  "
+    expression = " A  &  B  →   C     "
     v, v1, match = truthTable(expression)
     karno(match, v1)
     print(karta_karno(match, v1))
-
+    print(sdnf(v, v1, match))
+    print(scnf(v, v1, match))
+    print(polinom(v1, v, match))
     # print("_____________")
     # print("T0: ", T0(v))
     # print("T1: ", T1(v))

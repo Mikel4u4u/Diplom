@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
-from main import truthTable, Post, karno, karta_karno
+from tkinter import messagebox
+from main import *
 
 variable = []
 
@@ -36,7 +37,7 @@ def karno_tab(entry):
     try:
         v, v1, match = truthTable(value)
     except:
-        print("ERROR")
+        messagebox.showerror("ERROR", "Wrong function: "+str(value))
     arr = karno(match, v1)
     kstr = karta_karno(match, v1)
     m = arr[0]
@@ -47,6 +48,16 @@ def karno_tab(entry):
     table.pack(side=TOP)
     message3.set("")
     message3.set(kstr)
+
+def dopol(entry):
+    value = get_value(entry)
+    try:
+        v, v1, match = truthTable(value)
+    except:
+        messagebox.showerror("ERROR", "Wrong function: " + str(value))
+    Text31.delete(1.0, END)
+    Text31.insert(1.0, "СКНФ:"+ scnf(v, v1, match) +"\n\nСДНФ:"+ sdnf(v, v1, match) +" \n\nПолином Жегалкина: "+ polinom(v1, v, match))
+
 
 
 def get_value(entryWidget):
@@ -87,7 +98,7 @@ def check_Post(entry):
     try:
         v, v1, match = truthTable(value)
     except:
-        print("ERROR")
+        messagebox.showerror("ERROR", "Wrong function: "+str(value))
     m = match
     m.append('Y')
     table = Table(Frame2, headings=m, rows=v1)
@@ -112,10 +123,16 @@ root.geometry('800x700')
 
 tab_control = ttk.Notebook(root)
 f1 = Frame(root, bg='grey')
+f3 = Frame(root, bg='grey')
 f2 = Frame(root, bg='grey')
+
 
 tab_control.add(f1, text='Критерий Поста')
 tab_control.pack(fill="both", side="top", expand=True)
+
+tab_control.add(f3, text='СКНФ/СДНФ/Полином Жегалкина')
+tab_control.pack(fill="both", side="top", expand=True)
+
 tab_control.add(f2, text='Карта Карно')
 tab_control.pack(fill="both", side="top", expand=True)
 
@@ -141,6 +158,9 @@ Frame21.pack(side=TOP, fill="both")
 Frame22 = Frame(f2, bg='grey')
 Frame22.pack(side=TOP, fill="both")
 
+Frame31 = Frame(f3, bg='grey')
+Frame31.pack(side=TOP, fill="both")
+
 # Кнопки
 for row in range(4):
     for col in range(4):
@@ -157,14 +177,21 @@ Entry1.pack(side=TOP, padx=5, pady=5)
 Entry2 = Entry(Frame21, textvariable=message, width=60)
 Entry2.pack(side=TOP, padx=5, pady=5)
 
+Entry3 = Entry(Frame31, textvariable=message, width=60)
+Entry3.pack(side=TOP, padx=5, pady=5)
+
+
+
 Label2 = Label(Frame12, textvariable=message1, width=80)
 Label2.pack(side=TOP, padx=5, pady=5)
-
 Label3 = Label(Frame12, textvariable=message2, width=80)
 Label3.pack(side=TOP, padx=5, pady=5)
-
 Label4 = Label(f2, textvariable=message3, width=60)
 Label4.pack(side=TOP, padx=5, pady=5)
+
+Text31 = Text(f3, width=100, height=30)
+Text31.pack(side=TOP, padx=5, pady=5)
+Text31.insert(1.0, "СКНФ: \n\nСДНФ: \n\nПолином Жегалкина:")
 
 Button(Frame1, text='Проверить критерий Поста',
        command=lambda: [check_Post(Entry1)]).pack()
@@ -173,5 +200,10 @@ Button(Frame12, text='Очистить',
 
 Button(Frame21, text='карта Карно',
        command=lambda: [karno_tab(Entry2)]).pack(side=TOP)
+
+Button(Frame31, text='Построить',
+       command=lambda: [dopol(Entry2)]).pack(side=TOP)
+
+
 
 root.mainloop()
