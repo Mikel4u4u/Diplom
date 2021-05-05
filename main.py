@@ -117,17 +117,22 @@ def karno(match, v1):
 
 def karta_karno(match, v):
     mas = []
+    mas0 = []
     kstr = ""
     for i in range(len(v)):
         if v[i][-1] == True:
             mas.append(i)
+
+    for i in range(len(v)):
+        if v[i][-1] == False:
+            mas0.append(i)
 
     if len(mas) == len(v):
         return "TRUE"
     elif len(mas) == 0:
         return "FALSE"
 
-    arr = qm.qm(ones=mas)
+    arr = qm.qm(ones=mas, zeros=mas0)
     print(arr)
     for i in range(len(arr)):
         if i == len(arr) - 1:
