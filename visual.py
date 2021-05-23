@@ -48,6 +48,13 @@ def karno_tab(entry):
     table.pack(side=TOP)
     message3.set("")
     message3.set(kstr)
+    fic = fictivn(match, v1)
+    if fic == "":
+        message4.set("Все переменные существенные")
+    else:
+        message4.set("Фиктивные переменные: "+fic)
+
+
 
 def dopol(entry):
     value = get_value(entry)
@@ -122,6 +129,7 @@ root = Tk()
 root.geometry('800x700')
 
 tab_control = ttk.Notebook(root)
+
 f1 = Frame(root, bg='grey')
 f3 = Frame(root, bg='grey')
 f2 = Frame(root, bg='grey')
@@ -129,35 +137,30 @@ f2 = Frame(root, bg='grey')
 
 tab_control.add(f1, text='Критерий Поста')
 tab_control.pack(fill="both", side="top", expand=True)
-
 tab_control.add(f3, text='СКНФ/СДНФ/Полином Жегалкина')
 tab_control.pack(fill="both", side="top", expand=True)
-
 tab_control.add(f2, text='Карта Карно')
 tab_control.pack(fill="both", side="top", expand=True)
+
 
 message = StringVar()
 message1 = StringVar()
 message2 = StringVar()
 message3 = StringVar()
+message4 = StringVar()
 message1.set("Система булевых функций: ")
 
 # Фреймы
 Frame1 = Frame(f1, bg='green')
 Frame1.pack(side=TOP)
-
 Frame11 = Frame(f1, bg='blue')
 Frame11.pack(side=TOP)
-
 Frame12 = Frame(f1, bg='grey')
 Frame12.pack(side=TOP, fill="both")
-
 Frame21 = Frame(f2, bg='grey')
 Frame21.pack(side=TOP, fill="both")
-
 Frame22 = Frame(f2, bg='grey')
 Frame22.pack(side=TOP, fill="both")
-
 Frame31 = Frame(f3, bg='grey')
 Frame31.pack(side=TOP, fill="both")
 
@@ -171,16 +174,13 @@ for row in range(4):
 Frame2 = Frame(f1, bg='blue')
 Frame2.pack(side=BOTTOM, expand=True)
 
+
 Entry1 = Entry(Frame1, textvariable=message, width=60)
 Entry1.pack(side=TOP, padx=5, pady=5)
-
 Entry2 = Entry(Frame21, textvariable=message, width=60)
 Entry2.pack(side=TOP, padx=5, pady=5)
-
 Entry3 = Entry(Frame31, textvariable=message, width=60)
 Entry3.pack(side=TOP, padx=5, pady=5)
-
-
 
 Label2 = Label(Frame12, textvariable=message1, width=80)
 Label2.pack(side=TOP, padx=5, pady=5)
@@ -189,18 +189,23 @@ Label3.pack(side=TOP, padx=5, pady=5)
 Label4 = Label(f2, textvariable=message3, width=60)
 Label4.pack(side=TOP, padx=5, pady=5)
 
+Label5 = Label(f2, textvariable=message4, width=60)
+Label5.pack(side=TOP, padx=5, pady=5)
+
+# Текстовые поля
 Text31 = Text(f3, width=100, height=30)
 Text31.pack(side=TOP, padx=5, pady=5)
 Text31.insert(1.0, "СКНФ: \n\nСДНФ: \n\nПолином Жегалкина:")
 
+
+
+# Кнопки
 Button(Frame1, text='Проверить критерий Поста',
        command=lambda: [check_Post(Entry1)]).pack()
 Button(Frame12, text='Очистить',
        command=lambda: [cleanPost()]).pack(side=TOP)
-
 Button(Frame21, text='карта Карно',
        command=lambda: [karno_tab(Entry2)]).pack(side=TOP)
-
 Button(Frame31, text='Построить',
        command=lambda: [dopol(Entry2)]).pack(side=TOP)
 

@@ -1,6 +1,8 @@
 from pars import *
+import itertools
 import qm
 import re
+from math import log
 
 
 def check(match, k):
@@ -37,6 +39,8 @@ def sdnf(v, v1, match):
         if v1[i][-1] == True:
             kstr = kstr + check1(match, v1[i]) + " ⋁ "
     kstr = kstr[:-3]
+    if kstr == '':
+        kstr="не существует"
     return kstr
 
 
@@ -60,6 +64,8 @@ def scnf(v, v1, match):
         if v1[i][-1] == False:
             kstr = kstr + check2(match, v1[i]) + " & "
     kstr = kstr[:-3]
+    if kstr == '':
+        kstr="не существует"
     return kstr
 
 
@@ -143,6 +149,21 @@ def mass_to_str(a):
         s = s + str(i)
     return s
 
+def fictivn(match, v1):
+
+    arr=""
+    for j in range(len(match)):
+        tmp=0
+        t=2**(len(match)-(j+1))
+        for i in range(len(v1)):
+            if v1[i][j]==0:
+                if v1[i][-1] == v1[i+t][-1]:
+                    tmp = tmp+1
+        if tmp == (len(v1)/2):
+            arr = arr+ str(match[j])+" "
+    return arr
+
+
 
 def Post(v, v1):
     a = ["Критерий", "True/False"]
@@ -184,6 +205,16 @@ def karno(match, v1):
                 mas[i][0] = arr1[i - 1]
             mas[i][j] = arr3[i - 1][j - 1]
 
+    if len(mas[0]) == 5:
+        for i in range(a1):
+            tmp = mas[i][3]
+            mas[i][3] = mas[i][4]
+            mas[i][4] = tmp
+        if len(mas) == 5:
+            tmp = mas[3]
+            mas[3] = mas[4]
+            mas[4] = tmp
+
     mas[0][0] = mass_to_str(match[:a]) + "/" + mass_to_str(match[a:])
     for i in mas:
         print(i)
@@ -219,29 +250,49 @@ def karta_karno(match, v):
 
 
 def truthTable(expression):
-    match = re.findall(r'\b\w\d?\b', expression)
+    # Для векторного представления функции
+    t = re.fullmatch(r'[01]+', expression)
+    if t:
+        Logn = log(len(t[0]), 2)
+        if (Logn == int(Logn)):
+            match = []
+            bases2 = []
+            bases = [int(c) for c in expression]
+            bases1 = list(itertools.product([0, 1], repeat=int(Logn)))
+            for i in range(len(bases)):
+                bases2.append(list(bases1[i]))
+                bases2[i].append(bases[i])
+            for i in range(int(Logn)):
+                match.append(chr(97 + i))
+
+            return bases, bases2, match
+    # Для обычного представления функции
+    match = re.findall(r'\b[a-zA-Zа-яА-ЯёЁ]\d?\b', expression)
     match = list(set(match))
     match.sort()
 
     print("Boolean Expression:")
     print("  X = " + expression.upper())
-
+    expression = re.sub(r'\b[1]\b', r'True', expression)
+    expression = re.sub(r'\b[0]\b', r'False', expression)
     a = Truths(match, [expression])
     v, v1 = a.my_as_pandas()
     print(match)
     for i in v1:
         print(i)
+
     return v, v1, match
 
 
 if __name__ == "__main__":
-    expression = " A  &  B  →   C     "
+    expression = "00111100"
     v, v1, match = truthTable(expression)
-    karno(match, v1)
-    print(karta_karno(match, v1))
-    print(sdnf(v, v1, match))
-    print(scnf(v, v1, match))
-    print(polinom(v1, v, match))
+    #karno(match, v1)
+    #print(karta_karno(match, v1))
+    #print(sdnf(v, v1, match))
+    #print(scnf(v, v1, match))
+    #print(polinom(v1, v, match))
+    print(fictivn(match, v1))
     # print("_____________")
     # print("T0: ", T0(v))
     # print("T1: ", T1(v))
