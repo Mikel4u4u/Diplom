@@ -18,7 +18,6 @@ def check(match, k):
     kstr = "( " + kstr + " )"
     return kstr
 
-
 def check1(match, k):
     kstr = ""
     for i in range(len(k) - 1):
@@ -57,7 +56,6 @@ def check2(match, k):
     kstr = "( " + kstr + " )"
     return kstr
 
-
 def scnf(v, v1, match):
     kstr = ""
     for i in range(len(v1)):
@@ -67,7 +65,6 @@ def scnf(v, v1, match):
     if kstr == '':
         kstr="не существует"
     return kstr
-
 
 def check3(match, k):
     kstr = ""
@@ -79,7 +76,6 @@ def check3(match, k):
     kstr = kstr[:-3]
     kstr = "( " + kstr + " )"
     return kstr
-
 
 def polinom(values, valuesy, match):
     kstr = ""
@@ -96,13 +92,11 @@ def polinom(values, valuesy, match):
     kstr = kstr[:-3]
     return kstr
 
-
 def T0(values):
     if not values[0]:
         return True
     else:
         return False
-
 
 def T1(values):
     if values[-1]:
@@ -110,14 +104,12 @@ def T1(values):
     else:
         return False
 
-
 def S(values):
     for i in range(len(values) // 2):
         if (values[i] == values[len(values) - 1 - i]):
-            return False
+            return False, [i, len(values) - 1 - i]
     else:
-        return True
-
+        return True, "Yes"
 
 def M(values):
     for i in range(len(values) - 1):
@@ -128,9 +120,8 @@ def M(values):
                     if values[j][t] >= values[i][t]:
                         s = s + 1
                     if s == len(values[0]) - 1:
-                        return False
-    return True
-
+                        return False, [j, i]
+    return True, "NO"
 
 def L(values, valuesy):
     for i in range(len(values)):
@@ -142,7 +133,6 @@ def L(values, valuesy):
         valuesy.pop()
     return True
 
-
 def mass_to_str(a):
     s = ''
     for i in a:
@@ -150,7 +140,6 @@ def mass_to_str(a):
     return s
 
 def fictivn(match, v1):
-
     arr=""
     for j in range(len(match)):
         tmp=0
@@ -163,13 +152,12 @@ def fictivn(match, v1):
             arr = arr+ str(match[j])+" "
     return arr
 
-
-
 def Post(v, v1):
     a = ["Критерий", "True/False"]
-    b = [["T0", T0(v)], ["T1", T1(v)], ["S", S(v)], ["M", M(v1)], ["L", L(v1, v)]]
-    return a, b
-
+    s, s1 = S(v)
+    m, m1 = M(v1)
+    b = [["T0", T0(v)], ["T1", T1(v)], ["S", s], ["M", m], ["L", L(v1, v)]]
+    return a, b, [s1, m1]
 
 def karno(match, v1):
     arr1 = []
@@ -221,7 +209,6 @@ def karno(match, v1):
 
     return mas
 
-
 def karta_karno(match, v):
     mas = []
     mas0 = []
@@ -248,7 +235,6 @@ def karta_karno(match, v):
             kstr = kstr + check(match, arr[i]) + " ⋁ "
     return kstr
 
-
 def truthTable(expression):
     # Для векторного представления функции
     t = re.fullmatch(r'[01]+', expression)
@@ -264,7 +250,6 @@ def truthTable(expression):
                 bases2[i].append(bases[i])
             for i in range(int(Logn)):
                 match.append(chr(97 + i))
-
             return bases, bases2, match
     # Для обычного представления функции
     match = re.findall(r'\b[a-zA-Zа-яА-ЯёЁ]\d?\b', expression)
@@ -276,27 +261,27 @@ def truthTable(expression):
     expression = re.sub(r'\b[1]\b', r'True', expression)
     expression = re.sub(r'\b[0]\b', r'False', expression)
     a = Truths(match, [expression])
-    v, v1 = a.my_as_pandas()
-    print(match)
-    for i in v1:
-        print(i)
+    v, v1 = a.my_func()
+
 
     return v, v1, match
 
-
 if __name__ == "__main__":
-    expression = "00111100"
+    expression = "A  → ¬ B & ¬ C ⊕ B"
     v, v1, match = truthTable(expression)
+    l = v.copy()
+    l1 = v1.copy()
+
+    # print("T0: ", T0(v))
+    # print("T1: ", T1(v))
+    #print("S: ", S(v))
+    #print("M: ", M(v1))
+    #print("L: ", L(v1, v))
     #karno(match, v1)
     #print(karta_karno(match, v1))
     #print(sdnf(v, v1, match))
     #print(scnf(v, v1, match))
-    #print(polinom(v1, v, match))
-    print(fictivn(match, v1))
+    #print(polinom(l1, l, match))
+    # print(fictivn(match, v1))
     # print("_____________")
-    # print("T0: ", T0(v))
-    # print("T1: ", T1(v))
-    # print("S: ", S(v))
-    # print("M: ", M(v1))
-    # print("L: ", L(v1, v))
     # print()

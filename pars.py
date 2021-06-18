@@ -4,8 +4,6 @@ import itertools
 import re
 import pyparsing
 
-
-
 # dict of boolean operations
 OPERATIONS = {
     'not':      (lambda x: not x),
@@ -120,12 +118,12 @@ class Truths:
     Class Truhts with modules for table formatting
     """
 
-    def __init__(self, bases=None, phrases=None, ints=True, ascending=False):
+    def __init__(self, bases=None, phrases=None, ascending=False):
         if not bases:
             raise Exception('Base items are required')
         self.bases = bases
         self.phrases = phrases or []
-        self.ints = ints
+
 
         # generate the sets of booleans for the bases
         if ascending:
@@ -139,7 +137,6 @@ class Truths:
         # regex to match whole words defined in self.bases
         # used to add object context to variables in self.phrases
         self.p = re.compile(r'(?<!\w)(' + '|'.join(self.bases) + r')(?!\w)')
-
         # uesd for parsing logical operations and parenthesis
         self.to_match = pyparsing.Word(pyparsing.alphanums)
         for item in itertools.chain(self.bases,
@@ -152,21 +149,29 @@ class Truths:
         Evaluates the logical value for each expression
         """
         bools = dict(zip(self.bases, args))
-
         eval_phrases = []
         for phrase in self.phrases:
+            print(1,phrase)
             # substitute bases in phrase with boolean values as strings
-            phrase = self.p.sub(lambda match: str(bools[match.group(0)]), phrase)  # NOQA long line
+            print()
+            phrase = self.p.sub(lambda match: str(bools[match.group(0)]), phrase)
+            print(1.5, bools)
+            print(2,phrase)
             # wrap phrase in parens
             phrase = '(' + phrase + ')'
+            print(3,phrase)
             # parse the expression using pyparsing
             interpreted = self.parens.parseString(phrase).asList()[0]
+            print(4,interpreted)
             # convert any 'True' or 'False' to boolean values
             interpreted = recursive_map(string_to_bool, interpreted)
             # group operations
+            print(5,interpreted)
             interpreted = group_operations(interpreted)
             # evaluate the phrase
+            print(6,interpreted)
             eval_phrases.append(solve_phrase(interpreted))
+            print(7, solve_phrase(interpreted))
 
         # add the bases and evaluated phrases to create a single row
         row = [int(val) for key, val in bools.items()] + eval_phrases
@@ -174,10 +179,8 @@ class Truths:
 
 
 
-    def my_as_pandas(self):
-        """
-        Table as Pandas DataFrame
-        """
+    def my_func(self):
+      
         x = []
         y = []
         for conditions_set in self.base_conditions:
